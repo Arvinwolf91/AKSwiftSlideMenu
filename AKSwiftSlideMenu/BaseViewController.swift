@@ -26,38 +26,40 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
         switch(index){
         case 0:
             print("Home\n", terminator: "")
-
             self.openViewControllerBasedOnIdentifier("Home")
-            
             break
+            
         case 1:
             print("Play\n", terminator: "")
-            
             self.openViewControllerBasedOnIdentifier("PlayVC")
-            
             break
+            
         default:
             print("default\n", terminator: "")
         }
     }
     
-    func openViewControllerBasedOnIdentifier(_ strIdentifier:String){
+    func openViewControllerBasedOnIdentifier(_ strIdentifier:String) {
         let destViewController : UIViewController = self.storyboard!.instantiateViewController(withIdentifier: strIdentifier)
         
         let topViewController : UIViewController = self.navigationController!.topViewController!
         
-        if (topViewController.restorationIdentifier! == destViewController.restorationIdentifier!){
+        if (topViewController.restorationIdentifier! == destViewController.restorationIdentifier!) {
             print("Same VC")
         } else {
             self.navigationController!.pushViewController(destViewController, animated: true)
         }
     }
     
-    func addSlideMenuButton(){
+    func addSlideMenuButton() {
         let btnShowMenu = UIButton(type: UIButton.ButtonType.system)
         btnShowMenu.setImage(self.defaultMenuImage(), for: UIControl.State())
         btnShowMenu.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        btnShowMenu.addTarget(self, action: #selector(BaseViewController.onSlideMenuButtonPressed(_:)), for: UIControl.Event.touchUpInside)
+        btnShowMenu.addTarget(
+            self,
+            action: #selector(BaseViewController.onSlideMenuButtonPressed(_:)),
+            for: UIControl.Event.touchUpInside
+        )
         let customBarItem = UIBarButtonItem(customView: btnShowMenu)
         self.navigationItem.leftBarButtonItem = customBarItem;
     }
@@ -78,13 +80,12 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
         UIBezierPath(rect: CGRect(x: 0, y: 18, width: 30, height: 1)).fill()
         
         defaultMenuImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
         UIGraphicsEndImageContext()
        
         return defaultMenuImage;
     }
     
-    @objc func onSlideMenuButtonPressed(_ sender : UIButton){
+    @objc func onSlideMenuButtonPressed(_ sender : UIButton) {
         if (sender.tag == 10)
         {
             // To Hide Menu If it already there
@@ -121,7 +122,12 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
         menuVC.view.frame=CGRect(x: 0 - UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            menuVC.view.frame=CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
+            menuVC.view.frame = CGRect(
+                x: 0,
+                y: 0,
+                width: UIScreen.main.bounds.size.width,
+                height: UIScreen.main.bounds.size.height
+            );
             sender.isEnabled = true
             }, completion:nil)
     }
